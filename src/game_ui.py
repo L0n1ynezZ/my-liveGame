@@ -3,6 +3,7 @@ import os
 import tkinter as tk
 from tkinter import ttk
 from utils.file_utils import get_resource_path
+import pygame
 
 
 class GameUI:
@@ -11,6 +12,9 @@ class GameUI:
         self.animation_manager = animation_manager
         self.typing_interval = 100  # 默认文字间隔
         self.sound_effect = get_resource_path("../assets/sounds/type.mp3")
+
+        # 初始化 pygame 混音器
+        pygame.mixer.init()
 
         # 初始化界面组件
         self.create_left_panel()
@@ -129,11 +133,10 @@ class GameUI:
     def play_sound(self):
         """播放音效"""
         try:
-            import winsound
-            winsound.PlaySound(
-                self.sound_effect,
-                winsound.SND_FILENAME | winsound.SND_ASYNC
-            )
+            # 加载音效文件
+            sound = pygame.mixer.Sound(self.sound_effect)
+            # 播放音效
+            sound.play()
         except Exception as e:
             print(f"音效播放失败: {str(e)}")
 
